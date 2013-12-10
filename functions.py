@@ -76,15 +76,16 @@ def prediction(hours_before, waiting_list, data):
     prediction_array = []
 
     for x_values, y_values in zip(data['x'], data['y']):
-
-        linearopt = curve_fit(linear, np.array(x_values), np.array(y_values))
+        #get x and y values which are closer to hours remaining
+        filtered_x, filtered_y = getValidDataPoints(x_values, y_values, waiting_list)
+        linearopt = curve_fit(linear, np.array(filtered_x), np.array(filtered_y))
         linear_val_at_hours = int(linear(hours_before, linearopt[0][0], linearopt[0][1]))
         linear_val_at_zero = int(linear(0, linearopt[0][0], linearopt[0][1]))
         pred = linear_val_at_zero - (linear_val_at_hours - waiting_list)
 
         prediction_array.append(pred)
         line_data = {
-            "points" : createPoints(x_values, y_values)
+            "points" : createPoints(filtered_x, filtered_y)
         }
         graph_data["lines"].append(line_data)
 
@@ -97,7 +98,7 @@ def prediction(hours_before, waiting_list, data):
         result = dict(result.items() + {
             "prediction" : False,
             "message" : "high chances that your ticket will not be confirmed",
-        }.items())
+            }.items())
     else:
         result = dict(result.items() + {
             "prediction" : True,
