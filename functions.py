@@ -1,5 +1,6 @@
 from scipy.optimize import curve_fit
 import numpy as np
+import json
 
 def linear(x, a, b):
     return a + b*x
@@ -92,3 +93,14 @@ def prediction(hours_before, waiting_list, data):
         }.items())
 
     return result
+
+def getPrediction(array_conditions, hours_before, wl, socket):
+    parameters = {
+        "conditions" : array_conditions,
+        "hours_before" : hours_before,
+        "waiting_list" : wl
+    }
+    socket.send(json.dumps(parameters))
+    message_predictor = socket.recv()
+    indv_prediction = json.loads(message_predictor)
+    return indv_prediction
