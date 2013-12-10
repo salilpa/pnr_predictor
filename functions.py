@@ -47,6 +47,18 @@ def getRelevantData(collection, array_conditions, sort_by, max=15):
 
     return result
 
+def getValidDataPoints(x_array, y_array, waiting_list, limiter=3):
+    if not isinstance(x_array, list) or not isinstance(y_array,list) or not isinstance(waiting_list, int) or not isinstance(limiter,int):
+        return [],[]
+    if len(x_array) != len(y_array):
+        return [],[]
+    data_limiter = 0
+    for x in x_array:
+        data_limiter += 1
+        if waiting_list <= x and data_limiter >= limiter:
+            return x_array[0:data_limiter], y_array[0:data_limiter]
+    return x_array, y_array
+
 def prediction(hours_before, waiting_list, data):
 
     graph_data = {
