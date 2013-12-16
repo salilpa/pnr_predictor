@@ -53,3 +53,8 @@ Suggested installation using virtualenv
 Development
 -----------
 make changes to the function, run the prediction accuracy job and track whether it has improved accuracy or not
+
+Current Accuracy
+----------------
+Success in 1709, Failure in 490
+Original Success in 1613, Original Failure in 587
