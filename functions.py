@@ -77,7 +77,7 @@ def prediction(hours_before, waiting_list, data):
 
     for x_values, y_values in zip(data['x'], data['y']):
         #get x and y values which are closer to hours remaining
-        filtered_x, filtered_y = getValidDataPoints(x_values, y_values, waiting_list)
+        filtered_x, filtered_y = getValidDataPoints(x_values, y_values, hours_before)
         linearopt = curve_fit(linear, np.array(filtered_x), np.array(filtered_y))
         linear_val_at_hours = int(linear(hours_before, linearopt[0][0], linearopt[0][1]))
         linear_val_at_zero = int(linear(0, linearopt[0][0], linearopt[0][1]))
