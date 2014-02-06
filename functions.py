@@ -70,11 +70,14 @@ def prediction(hours_before, waiting_list, data):
             "prediction" : False,
             "message" : "Not Enough data for prediction",
             "data" : graph_data,
-            "prediction_val" : 0
+            "prediction_val" : 0,
+            "probability" : float(0)
         }
 
     prediction_array = []
 
+    success = 0
+    failure = 0
     for x_values, y_values in zip(data['x'], data['y']):
         #get x and y values which are closer to hours remaining
         filtered_x, filtered_y = getValidDataPoints(x_values, y_values, hours_before)
@@ -88,13 +91,18 @@ def prediction(hours_before, waiting_list, data):
             "points" : createPoints(filtered_x, filtered_y)
         }
         graph_data["lines"].append(line_data)
+        if pred > 0 :
+            failure += 1
+        else:
+            success += 1
 
     mean = np.mean(prediction_array)
     result = {
         "data" : graph_data,
-        "prediction_val" : mean
+        "prediction_val" : mean,
+        "probability" : int(float(success*100)/(success+failure))
     }
-    if mean > 0:
+    if success < failure:
         result = dict(result.items() + {
             "prediction" : False,
             "message" : "high chances that your ticket will not be confirmed",

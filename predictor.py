@@ -27,7 +27,7 @@ while True:
     s = socket.recv()
     message = json.loads(s)
     #sanity check the input
-    data = getRelevantData(collection,message["conditions"], sort_by, 15)
+    data = getRelevantData(collection,message["conditions"], sort_by, 20)
     result = prediction(message["hours_before"], message["waiting_list"], data)
     logging.info(message)
 
