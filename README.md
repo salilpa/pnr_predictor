@@ -56,5 +56,5 @@ make changes to the function, run the prediction accuracy job and track whether 
 
 Current Accuracy
 ----------------
-Success in 1709, Failure in 490
+Success in 1765, Failure in 434
 Original Success in 1613, Original Failure in 587
